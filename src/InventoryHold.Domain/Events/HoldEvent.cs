@@ -1,3 +1,4 @@
+using System.Text.Json.Serialization;
 using InventoryHold.Domain.Entities;
 
 namespace InventoryHold.Domain.Events;
@@ -22,6 +23,7 @@ public sealed record HoldEvent
     public required IReadOnlyList<HoldEventItem> Items { get; init; }
 
     /// <summary>Topic routing key: hold.created / hold.released / hold.expired.</summary>
+    [JsonIgnore]
     public string RoutingKey => EventType switch
     {
         Created => "hold.created",

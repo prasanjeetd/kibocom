@@ -95,11 +95,14 @@ public sealed class RabbitMqEventPublisher(
 
     /// <summary>
     /// Topic exchange with a hold.# audit queue and a dead-letter exchange, so a consumer that
-    /// keeps rejecting a message parks it instead of spinning on it forever.
+    /// keeps rejecting a message parks it instead of spinning on it forever. The DLX needs a
+    /// queue bound to it: an exchange with no bindings discards silently, and that is also where
+    /// max-length overflow lands once the audit queue hits the broker's cap.
     /// </summary>
     private async Task DeclareTopologyAsync(IChannel channel, CancellationToken cancellationToken)
     {
         var deadLetter = $"{_options.Exchange}.dlx";
+        var deadLetterQueue = $"{_options.AuditQueue}.dlq";
 
         await channel.ExchangeDeclareAsync(
             _options.Exchange, ExchangeType.Topic, durable: true, autoDelete: false,
@@ -108,6 +111,13 @@ public sealed class RabbitMqEventPublisher(
         await channel.ExchangeDeclareAsync(
             deadLetter, ExchangeType.Topic, durable: true, autoDelete: false,
             cancellationToken: cancellationToken);
+
+        await channel.QueueDeclareAsync(
+            deadLetterQueue, durable: true, exclusive: false, autoDelete: false,
+            cancellationToken: cancellationToken);
+
+        await channel.QueueBindAsync(
+            deadLetterQueue, deadLetter, "#", cancellationToken: cancellationToken);
 
         await channel.QueueDeclareAsync(
             _options.AuditQueue, durable: true, exclusive: false, autoDelete: false,

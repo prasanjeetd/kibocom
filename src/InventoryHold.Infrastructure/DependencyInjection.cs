@@ -76,7 +76,11 @@ public static class InfrastructureServiceCollectionExtensions
         services.AddSingleton<IInventoryRepository>(sp => new CachedInventoryRepository(
             sp.GetRequiredService<MongoInventoryRepository>(),
             sp.GetRequiredService<ICacheService>(),
-            sp.GetRequiredService<IOptions<RedisOptions>>()));
+            sp.GetRequiredService<IOptions<RedisOptions>>(),
+            // Constructed by hand, so the logger has to be passed explicitly. Without this the
+            // optional parameter defaults to null and every line the decorator writes - cache
+            // hit or miss, and the fail-open warnings - is silently discarded.
+            sp.GetRequiredService<ILogger<CachedInventoryRepository>>()));
 
         // Registered concretely as well, so the health check can read the live connection
         // state instead of opening a throwaway connection of its own.

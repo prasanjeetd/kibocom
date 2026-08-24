@@ -1,4 +1,4 @@
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Text.Json.Serialization;
 using InventoryHold.Infrastructure;
 using InventoryHold.Infrastructure.Logging;
@@ -34,9 +34,26 @@ if (!builder.Environment.IsDevelopment())
 //
 // The channel is created up front because logging providers are constructed before the service
 // provider exists; the background writer resolves MongoDB later and drains it.
+// The feed carries its own floor, independent of the console. Debug by default because the whole
+// point of the feed is tracing what a request did; Logging:Feed:MinimumLevel raises it if the
+// write volume ever becomes the problem.
+var feedLevel = builder.Configuration.GetValue("Logging:Feed:MinimumLevel", LogLevel.Debug);
+
 var logChannel = new LogChannel();
 builder.Services.AddSingleton(logChannel);
-builder.Logging.AddProvider(new MongoLoggerProvider(logChannel));
+builder.Logging.AddProvider(new MongoLoggerProvider(logChannel, TimeProvider.System, feedLevel));
+
+// Per-provider filter. Without it the global Logging:LogLevel floor applies to the feed too, and
+// raising that floor to Debug for the feed would push the same volume onto the console. This lets
+// everything through to the feed and leaves the feed's own MinimumLevel as the single control,
+// so the console keeps whatever Logging:LogLevel says.
+builder.Logging.AddFilter<MongoLoggerProvider>(null, LogLevel.Trace);
+
+// Levels come from configuration alone (Logging:LogLevel in appsettings.json), which raises
+// InventoryHold and Http to Debug so the decision trail - which stock moved, cache hit or miss,
+// how long each step took - is captured. Note this is a global rule: the console receives the
+// same Debug detail as the in-app feed. To keep the console terse while the feed stays verbose,
+// drop those two entries and add a per-provider filter here instead.
 builder.Services.AddHostedService<InventoryHold.WebApi.HostedServices.MongoLogWriter>();
 
 builder.Services
@@ -86,16 +103,41 @@ app.Use(async (context, next) =>
         return;
     }
 
+    // Everything logged while handling this request inherits the method and path, so a line from
+    // deep inside a repository still says which call it belongs to without repeating it itself.
+    using var scope = requestLogger.BeginScope(new Dictionary<string, object>
+    {
+        ["Method"] = context.Request.Method,
+        ["Path"] = context.Request.Path.Value ?? "/"
+    });
+
     var startedAt = Stopwatch.GetTimestamp();
+
+    // Opens the trace. Without a start line the first thing in the feed is whatever the handler
+    // did, and a request that hangs or throws before reaching it leaves no evidence at all.
+    requestLogger.LogTrace(
+        "{Method} {Path} started", context.Request.Method, context.Request.Path.Value);
+
     try
     {
         await next();
     }
     finally
     {
+        var status = context.Response.StatusCode;
+
+        // A successful read is Debug, a mutation is Information. The dashboard polls inventory
+        // and holds every couple of seconds, and at Information those reads would bury the
+        // handful of lines that actually say something happened. Filtering the feed to
+        // Information now yields the business story; Debug yields everything including polling.
+        var level = status >= 500 ? LogLevel.Error
+            : status >= 400 ? LogLevel.Warning
+            : HttpMethods.IsGet(context.Request.Method) ? LogLevel.Trace
+            : LogLevel.Information;
+
         var elapsed = Stopwatch.GetElapsedTime(startedAt);
         requestLogger.Log(
-            context.Response.StatusCode >= 500 ? LogLevel.Error : LogLevel.Information,
+            level,
             "{Method} {Path} responded {StatusCode} in {ElapsedMs:0.0}ms",
             context.Request.Method,
             context.Request.Path.Value,

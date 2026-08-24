@@ -1,4 +1,4 @@
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { keepPreviousData, useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { api, type CreateHoldRequest, type LogQuery } from './api';
 
@@ -33,6 +33,9 @@ export function useLogs(query: LogQuery, autoRefresh: boolean) {
     queryKey: ['logs', query],
     queryFn: () => api.getLogs(query),
     refetchInterval: autoRefresh ? 3000 : false,
+    // Hold the current page on screen while the next one loads, so paging does not blank
+    // the table and shift the layout on every click.
+    placeholderData: keepPreviousData,
   });
 }
 

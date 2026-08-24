@@ -6,4 +6,6 @@
 **/.git
 **/TestResults
 .env
+.env.*
+!.env.example
 *.pdf

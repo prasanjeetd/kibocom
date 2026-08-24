@@ -1,4 +1,4 @@
-using InventoryHold.Infrastructure.Logging;
+﻿using InventoryHold.Infrastructure.Logging;
 
 namespace InventoryHold.WebApi.HostedServices;
 
@@ -69,6 +69,9 @@ public sealed class MongoLogWriter(LogChannel channel, MongoLogStore store) : Ba
         Category = entry.Category,
         Message = entry.Message,
         TraceId = entry.TraceId,
+        SpanId = entry.SpanId,
+        EventId = entry.EventId,
+        EventName = entry.EventName,
         Properties = entry.Properties,
         Exception = entry.Exception
     };

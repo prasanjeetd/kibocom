@@ -1,3 +1,4 @@
+﻿using System.Diagnostics;
 using System.Text.Json;
 using InventoryHold.Domain.Entities;
 using InventoryHold.Domain.Repositories;
@@ -23,12 +24,29 @@ public sealed class RedisCacheService(
     public async Task<T?> GetAsync<T>(string key, CancellationToken cancellationToken = default)
         where T : class
     {
-        if (multiplexer is not { IsConnected: true }) return null;
+        if (multiplexer is not { IsConnected: true })
+        {
+            logger.LogDebug("Cache unavailable for {Key}; treating as a miss", key);
+            return null;
+        }
 
+        var startedAt = Stopwatch.GetTimestamp();
         try
         {
             var value = await multiplexer.GetDatabase().StringGetAsync(key);
-            return value.IsNullOrEmpty ? null : JsonSerializer.Deserialize<T>((string)value!, Json);
+            var elapsedMs = Stopwatch.GetElapsedTime(startedAt).TotalMilliseconds;
+
+            if (value.IsNullOrEmpty)
+            {
+                logger.LogTrace("Cache MISS for {Key} in {ElapsedMs:0.0}ms", key, elapsedMs);
+                return null;
+            }
+
+            logger.LogTrace(
+                "Cache HIT for {Key}: {Bytes} bytes in {ElapsedMs:0.0}ms",
+                key, ((string)value!).Length, elapsedMs);
+
+            return JsonSerializer.Deserialize<T>((string)value!, Json);
         }
         catch (Exception ex)
         {
@@ -43,10 +61,16 @@ public sealed class RedisCacheService(
     {
         if (multiplexer is not { IsConnected: true }) return;
 
+        var startedAt = Stopwatch.GetTimestamp();
         try
         {
             var payload = JsonSerializer.Serialize(value, Json);
             await multiplexer.GetDatabase().StringSetAsync(key, payload, timeToLive);
+
+            logger.LogTrace(
+                "Cache SET {Key}: {Bytes} bytes, TTL {TtlSeconds}s in {ElapsedMs:0.0}ms",
+                key, payload.Length, (int)timeToLive.TotalSeconds,
+                Stopwatch.GetElapsedTime(startedAt).TotalMilliseconds);
         }
         catch (Exception ex)
         {
@@ -58,9 +82,17 @@ public sealed class RedisCacheService(
     {
         if (multiplexer is not { IsConnected: true }) return;
 
+        var startedAt = Stopwatch.GetTimestamp();
         try
         {
-            await multiplexer.GetDatabase().KeyDeleteAsync(key);
+            var removed = await multiplexer.GetDatabase().KeyDeleteAsync(key);
+
+            // Says out loud that a mutation invalidated the read path - the step that keeps the
+            // dashboard honest, and the first thing to check when a stale number is reported.
+            logger.LogDebug(
+                "Cache INVALIDATE {Key}: {Outcome} in {ElapsedMs:0.0}ms",
+                key, removed ? "key removed" : "nothing cached",
+                Stopwatch.GetElapsedTime(startedAt).TotalMilliseconds);
         }
         catch (Exception ex)
         {
@@ -85,9 +117,15 @@ public sealed class CachedInventoryRepository(
 
     public async Task<IReadOnlyList<InventoryItem>> GetAllAsync(CancellationToken cancellationToken = default)
     {
+        var startedAt = Stopwatch.GetTimestamp();
+
         var cached = await TryGetAsync(cancellationToken);
         if (cached is not null)
         {
+            logger?.LogTrace(
+                "Inventory served from cache: {Count} product(s) in {ElapsedMs:0.0}ms",
+                cached.Items.Count, Stopwatch.GetElapsedTime(startedAt).TotalMilliseconds);
+
             return [.. cached.Items.Select(i => new InventoryItem(i.Sku, i.Name, i.TotalQuantity, i.AvailableQuantity))];
         }
 
@@ -97,6 +135,11 @@ public sealed class CachedInventoryRepository(
             [.. fresh.Select(i => new CachedInventoryItem(i.Sku, i.Name, i.TotalQuantity, i.AvailableQuantity))]);
 
         await TrySetAsync(snapshot, cancellationToken);
+
+        logger?.LogTrace(
+            "Inventory read through to MongoDB: {Count} product(s) in {ElapsedMs:0.0}ms",
+            fresh.Count, Stopwatch.GetElapsedTime(startedAt).TotalMilliseconds);
+
         return fresh;
     }
 

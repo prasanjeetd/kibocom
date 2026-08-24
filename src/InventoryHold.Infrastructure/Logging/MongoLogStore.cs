@@ -1,4 +1,4 @@
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 using InventoryHold.Infrastructure.Mongo;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
@@ -14,6 +14,9 @@ public sealed class LogDocument
     public string Category { get; set; } = string.Empty;
     public string Message { get; set; } = string.Empty;
     public string? TraceId { get; set; }
+    public string? SpanId { get; set; }
+    public int EventId { get; set; }
+    public string? EventName { get; set; }
     public Dictionary<string, string>? Properties { get; set; }
     public string? Exception { get; set; }
 }
@@ -54,8 +57,8 @@ public sealed class MongoLogStore(MongoContext context)
         }
     }
 
-    public async Task<IReadOnlyList<LogDocument>> QueryAsync(
-        string? level, string? traceId, string? search, int limit,
+    public async Task<(IReadOnlyList<LogDocument> Items, long Total)> QueryAsync(
+        string? level, string? traceId, string? search, int skip, int limit,
         CancellationToken cancellationToken = default)
     {
         var builder = Builders<LogDocument>.Filter;
@@ -65,16 +68,39 @@ public sealed class MongoLogStore(MongoContext context)
             filter &= builder.Eq(d => d.Level, level);
 
         if (!string.IsNullOrWhiteSpace(traceId))
-            filter &= builder.Eq(d => d.TraceId, traceId);
+            filter &= builder.Eq(d => d.TraceId, NormaliseTraceId(traceId));
 
         if (!string.IsNullOrWhiteSpace(search))
             filter &= builder.Regex(d => d.Message,
                 new BsonRegularExpression(Regex.Escape(search), "i"));
 
-        return await Collection
+        // The collection is capped at 5,000 documents, so counting and skipping stay cheap.
+        // On an uncapped collection this would need a different approach entirely.
+        var total = await Collection.CountDocumentsAsync(filter, cancellationToken: cancellationToken);
+
+        var items = await Collection
             .Find(filter)
             .SortByDescending(d => d.Timestamp)
+            .Skip(Math.Max(0, skip))
             .Limit(Math.Clamp(limit, 1, 500))
             .ToListAsync(cancellationToken);
+
+        return (items, total);
+    }
+
+    /// <summary>
+    /// Accepts either a bare 32-character trace id or a full W3C traceparent
+    /// (<c>00-{trace}-{span}-01</c>) and returns the trace id.
+    ///
+    /// This matters because the two places a trace id is handed to a human disagree: the feed
+    /// shows the bare id, while a ProblemDetails error body returns the whole traceparent. Pasting
+    /// the one from a failed response into the filter has to find the request it describes.
+    /// </summary>
+    public static string NormaliseTraceId(string value)
+    {
+        var trimmed = value.Trim();
+        var parts = trimmed.Split('-');
+
+        return parts.Length == 4 && parts[1].Length == 32 ? parts[1] : trimmed;
     }
 }

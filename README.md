@@ -18,18 +18,14 @@ For every product:   availableQty  +  Σ(qty of all ACTIVE holds)  ==  totalQty
 Every design decision below is justified by whether it survives concurrency, crashes, and clock
 drift. If a change can break that equation, it is wrong however clean it looks.
 
-```
-                 ┌──────────────────────────────┐
-   POST /holds   │                              │  DELETE /holds/{id}
-   ─────────────▶│           ACTIVE             │───────────────────▶ RELEASED
-   deduct stock  │  (expiresAt = now + TTL)     │   restore stock
-                 └──────────────┬───────────────┘   HoldReleased
-                    HoldCreated │
-                                │ sweeper: expiresAt < now
-                                ▼
-                             EXPIRED
-                          restore stock
-                          HoldExpired
+```mermaid
+stateDiagram-v2
+    direction LR
+    [*] --> Active: POST /api/holds<br/>stock deducted atomically
+    Active --> Released: DELETE /api/holds/:id<br/>stock restored · HoldReleased
+    Active --> Expired: sweeper claims it<br/>expiresAt &lt; now<br/>stock restored · HoldExpired
+    Released --> [*]
+    Expired --> [*]
 ```
 
 `RELEASED` and `EXPIRED` are terminal, and both restore stock. The sharpest race in the system is a
@@ -75,6 +71,10 @@ docker compose up --build
 
 Five products are seeded on first start. Seeding is idempotent, so restarting never resets stock.
 
+On Windows, `scripts\start.bat` and `scripts\stop.bat` wrap the same commands and print the URLs
+above. `scripts\start.bat dev` starts only the infrastructure and opens the API and Vite dev server
+in their own windows; `scripts\stop.bat clean` also deletes the MongoDB volume, after confirming.
+
 ### Local development
 
 The fast loop runs infrastructure in containers and the code on the host:
@@ -93,6 +93,49 @@ No code changes are needed — every connection is configuration.
 ---
 
 ## Architecture
+
+```mermaid
+flowchart LR
+    UI["React 19 · TypeScript<br/>TanStack Query"]
+
+    subgraph WebApi["InventoryHold.WebApi"]
+        CTRL["Controllers<br/>holds · inventory · logs"]
+        BG["BackgroundServices<br/>ExpirySweeper · MongoLogWriter"]
+    end
+
+    subgraph Domain["InventoryHold.Domain — zero package references"]
+        SVC["HoldService · InventoryService"]
+        ENT["Hold · InventoryItem<br/>invariants live here"]
+        PORT["Ports<br/>IHoldRepository · IInventoryRepository<br/>ICacheService · IEventPublisher"]
+    end
+
+    subgraph Infra["InventoryHold.Infrastructure — adapters"]
+        MREPO["Mongo repositories<br/>guarded $inc · transactions"]
+        CACHE["CachedInventoryRepository<br/>RedisCacheService"]
+        PUB["RabbitMqEventPublisher"]
+    end
+
+    DB[("MongoDB<br/>holds · inventory · app_logs")]
+    RD[("Redis")]
+    MQ(["RabbitMQ<br/>inventory.holds"])
+
+    UI -- HTTP --> CTRL
+    CTRL --> SVC
+    BG --> SVC
+    SVC --> ENT
+    SVC --> PORT
+    PORT -. implemented by .-> MREPO
+    PORT -. implemented by .-> CACHE
+    PORT -. implemented by .-> PUB
+    MREPO --> DB
+    CACHE --> RD
+    CACHE --> MREPO
+    PUB --> MQ
+```
+
+**Dependencies point inward only.** `Domain` declares the four ports; `Infrastructure` supplies the
+adapters. Nothing crosses the other way, which is what lets the entire test suite run with no
+infrastructure at all.
 
 ```
 src/
@@ -134,6 +177,34 @@ One round trip; **the filter is the check**, so no window exists between checkin
 
 In SQL this is `UPDATE inventory SET available_qty = available_qty - @n WHERE sku = @s AND
 available_qty >= @n RETURNING *` — zero rows affected means you lost.
+
+Placing a hold, end to end — note that the quantity check *is* the write:
+
+```mermaid
+sequenceDiagram
+    autonumber
+    participant C as Client
+    participant S as HoldService
+    participant M as MongoDB
+    participant R as Redis
+    participant Q as RabbitMQ
+
+    C->>S: POST /api/holds
+    Note over S,M: one transaction
+    S->>M: findOneAndUpdate<br/>filter: sku AND availableQty ≥ n<br/>update: $inc availableQty by -n
+
+    alt filter matched — stock was there
+        M-->>S: updated document
+        S->>M: insert hold (same transaction)
+        S->>R: DEL inventory:all
+        S->>Q: HoldCreated
+        S-->>C: 201 Created
+    else filter matched nothing — someone else won
+        M-->>S: null
+        S-->>C: 409 Conflict
+        Note over S,Q: nothing published, cache untouched
+    end
+```
 
 *Rejected:* read the quantity, check it in C#, then write it back. Two callers both read `1`, both
 pass the check, both write `0`. Oversold.

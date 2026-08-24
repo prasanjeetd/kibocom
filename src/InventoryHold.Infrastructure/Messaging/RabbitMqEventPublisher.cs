@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json;
 using InventoryHold.Domain.Events;
 using InventoryHold.Domain.Repositories;
@@ -33,7 +34,15 @@ public sealed class RabbitMqEventPublisher(
 
     public async Task PublishAsync(HoldEvent domainEvent, CancellationToken cancellationToken = default)
     {
-        if (!_options.Enabled) return;
+        if (!_options.Enabled)
+        {
+            logger.LogDebug(
+                "Messaging disabled; {EventType} for hold {HoldId} not published",
+                domainEvent.EventType, domainEvent.HoldId);
+            return;
+        }
+
+        var startedAt = Stopwatch.GetTimestamp();
 
         try
         {
@@ -57,7 +66,11 @@ public sealed class RabbitMqEventPublisher(
                 cancellationToken: cancellationToken);
 
             logger.LogInformation(
-                "Published {EventType} for hold {HoldId}", domainEvent.EventType, domainEvent.HoldId);
+                "Published {EventType} for hold {HoldId} to {Exchange}/{RoutingKey} " +
+                "as {EventId} in {ElapsedMs:0.0}ms",
+                domainEvent.EventType, domainEvent.HoldId, _options.Exchange,
+                domainEvent.RoutingKey, domainEvent.EventId,
+                Stopwatch.GetElapsedTime(startedAt).TotalMilliseconds);
         }
         catch (Exception ex)
         {

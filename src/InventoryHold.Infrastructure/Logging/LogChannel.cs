@@ -1,4 +1,4 @@
-using System.Threading.Channels;
+﻿using System.Threading.Channels;
 
 namespace InventoryHold.Infrastructure.Logging;
 
@@ -12,6 +12,16 @@ public sealed record LogEntry
 
     /// <summary>Ties every line produced while handling one request back together.</summary>
     public string? TraceId { get; init; }
+
+    /// <summary>Identifies the individual operation within that request.</summary>
+    public string? SpanId { get; init; }
+
+    /// <summary>
+    /// The EventId the call site passed, when it passed one. This is what names a specific log
+    /// statement rather than merely the class it lives in.
+    /// </summary>
+    public int EventId { get; init; }
+    public string? EventName { get; init; }
 
     public Dictionary<string, string>? Properties { get; init; }
     public string? Exception { get; init; }

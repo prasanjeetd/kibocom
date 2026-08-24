@@ -76,14 +76,18 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return (await response.json()) as T;
 }
 
-export type LogLevel = 'Information' | 'Warning' | 'Error';
+export type LogLevel = 'Trace' | 'Debug' | 'Information' | 'Warning' | 'Error';
 
 export interface LogEntry {
   timestamp: string;
   level: LogLevel;
+  /** Full logger category, e.g. InventoryHold.Infrastructure.Mongo.MongoHoldRepository. */
   category: string;
   message: string;
   traceId: string | null;
+  spanId: string | null;
+  eventId: number;
+  eventName: string | null;
   properties: Record<string, string> | null;
   exception: string | null;
 }
@@ -92,7 +96,18 @@ export interface LogQuery {
   level?: string;
   traceId?: string;
   search?: string;
-  limit?: number;
+  page?: number;
+  pageSize?: number;
+}
+
+export interface LogPage {
+  items: LogEntry[];
+  page: number;
+  pageSize: number;
+  total: number;
+  totalPages: number;
+  hasPrevious: boolean;
+  hasNext: boolean;
 }
 
 export const api = {
@@ -111,7 +126,8 @@ export const api = {
     if (query.level) params.set('level', query.level);
     if (query.traceId) params.set('traceId', query.traceId);
     if (query.search) params.set('search', query.search);
-    params.set('limit', String(query.limit ?? 100));
-    return request<LogEntry[]>(`/api/logs?${params.toString()}`);
+    params.set('page', String(query.page ?? 1));
+    params.set('pageSize', String(query.pageSize ?? 20));
+    return request<LogPage>(`/api/logs?${params.toString()}`);
   },
 };

@@ -1,7 +1,7 @@
 {
   // Static-assets-only Worker: no server code, so there is no `main` entry.
   // Cloudflare serves ./dist directly from its edge network.
-  "name": "inventory-hold-web",
+  "name": "kibocom",
   "compatibility_date": "2026-08-24",
 
   "assets": {

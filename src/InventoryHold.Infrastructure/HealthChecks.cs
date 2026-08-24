@@ -40,24 +40,28 @@ public sealed class RedisHealthCheck(RedisConnection connection) : IHealthCheck
             : HealthCheckResult.Degraded("Redis unavailable; serving uncached"));
 }
 
-public sealed class RabbitMqHealthCheck(IOptions<RabbitMqOptions> options) : IHealthCheck
+/// <summary>
+/// Reports on the publisher's existing connection rather than dialling the broker.
+///
+/// Two reasons. A probe that opens a fresh TLS connection every few seconds exhausts the
+/// connection quota of a capped plan, so the healthcheck itself becomes the outage. And publishing
+/// is deliberately fail-open - a broker outage costs events, not availability - so a missing
+/// connection is Degraded, never Unhealthy. Reporting Unhealthy here would invite an orchestrator
+/// to restart a service that is answering requests perfectly.
+/// </summary>
+public sealed class RabbitMqHealthCheck(
+    RabbitMqEventPublisher publisher, IOptions<RabbitMqOptions> options) : IHealthCheck
 {
-    public async Task<HealthCheckResult> CheckHealthAsync(
+    public Task<HealthCheckResult> CheckHealthAsync(
         HealthCheckContext context, CancellationToken cancellationToken = default)
     {
-        if (!options.Value.Enabled) return HealthCheckResult.Healthy("RabbitMQ disabled");
+        if (!options.Value.Enabled)
+            return Task.FromResult(HealthCheckResult.Healthy("RabbitMQ disabled by configuration"));
 
-        try
-        {
-            var factory = new ConnectionFactory { Uri = new Uri(options.Value.Uri) };
-            await using var connection = await factory.CreateConnectionAsync(cancellationToken);
-            return connection.IsOpen
-                ? HealthCheckResult.Healthy("RabbitMQ reachable")
-                : HealthCheckResult.Unhealthy("RabbitMQ connection closed");
-        }
-        catch (Exception ex)
-        {
-            return HealthCheckResult.Unhealthy("RabbitMQ unreachable", ex);
-        }
+        return Task.FromResult(publisher.IsConnected
+            ? HealthCheckResult.Healthy("RabbitMQ connected")
+            // The connection is opened lazily on the first publish, so "not yet connected" is a
+            // normal state for a freshly started instance that has had no writes.
+            : HealthCheckResult.Degraded("RabbitMQ not currently connected; publishing fails open"));
     }
 }

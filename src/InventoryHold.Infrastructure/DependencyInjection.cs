@@ -76,7 +76,10 @@ public static class InfrastructureServiceCollectionExtensions
             sp.GetRequiredService<ICacheService>(),
             sp.GetRequiredService<IOptions<RedisOptions>>()));
 
-        services.AddSingleton<IEventPublisher, RabbitMqEventPublisher>();
+        // Registered concretely as well, so the health check can read the live connection
+        // state instead of opening a throwaway connection of its own.
+        services.AddSingleton<RabbitMqEventPublisher>();
+        services.AddSingleton<IEventPublisher>(sp => sp.GetRequiredService<RabbitMqEventPublisher>());
 
         // Domain policy built from configuration, so Domain itself stays framework-free.
         services.AddSingleton(sp => new HoldPolicy(TimeSpan.FromMinutes(

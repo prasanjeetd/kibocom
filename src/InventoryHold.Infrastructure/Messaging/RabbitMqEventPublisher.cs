@@ -24,6 +24,13 @@ public sealed class RabbitMqEventPublisher(
     private IConnection? _connection;
     private IChannel? _channel;
 
+    /// <summary>
+    /// Whether the broker connection is currently open. Health reporting reads this instead of
+    /// dialling the broker: a probe must never consume the resource it is probing, and on a
+    /// connection-capped plan an opening-and-closing healthcheck exhausts the quota.
+    /// </summary>
+    public bool IsConnected => _connection is { IsOpen: true };
+
     public async Task PublishAsync(HoldEvent domainEvent, CancellationToken cancellationToken = default)
     {
         if (!_options.Enabled) return;

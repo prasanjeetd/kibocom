@@ -47,6 +47,20 @@ app.MapScalarApiReference(options => options.WithTitle("Inventory Hold API"));
 
 app.MapControllers();
 
+// Liveness: is this process able to answer at all? No dependency checks, because a platform
+// probe that fails on a degraded dependency will restart a service that is serving correctly.
+// This is the path orchestrators should watch.
+app.MapHealthChecks("/health/live", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
+{
+    Predicate = _ => false,
+    ResponseWriter = (context, _) =>
+    {
+        context.Response.ContentType = "application/json";
+        return context.Response.WriteAsync("""{"status":"Alive"}""");
+    }
+});
+
+// Readiness: the full dependency picture, for humans and dashboards.
 app.MapHealthChecks("/health", new Microsoft.AspNetCore.Diagnostics.HealthChecks.HealthCheckOptions
 {
     ResponseWriter = async (context, report) =>

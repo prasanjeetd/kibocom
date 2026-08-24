@@ -11,7 +11,7 @@ services:
     dockerContext: .
     plan: free
     region: oregon
-    healthCheckPath: /health
+    healthCheckPath: /health/live   # liveness only - see Program.cs
 
     envVars:
       - key: PORT

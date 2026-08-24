@@ -9,20 +9,73 @@ import {
   useReleaseHold,
 } from './hooks';
 
-function ErrorBanner({ error }: { error: unknown }) {
+/* Icons are drawn inline rather than pulled from a font or a sprite: three glyphs do not
+   justify a dependency, and inheriting currentColor is what lets the message bar tint its
+   own icon from the status token. */
+
+function ErrorCircleIcon() {
+  return (
+    <svg viewBox="0 0 20 20" width="20" height="20" aria-hidden="true" focusable="false">
+      <circle cx="10" cy="10" r="7.25" fill="none" stroke="currentColor" strokeWidth="1.5" />
+      <path
+        d="M10 5.75v4.75"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+      <circle cx="10" cy="13.7" r="0.9" fill="currentColor" />
+    </svg>
+  );
+}
+
+function AddIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+      <path
+        d="M8 3.25v9.5M3.25 8h9.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function DismissIcon() {
+  return (
+    <svg viewBox="0 0 16 16" width="16" height="16" aria-hidden="true" focusable="false">
+      <path
+        d="M4.25 4.25l7.5 7.5M11.75 4.25l-7.5 7.5"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function MessageBar({ error }: { error: unknown }) {
   if (!error) return null;
 
   const message = error instanceof ApiError ? error.message : 'Something went wrong.';
-  const extra =
+  // A 409 carries the numbers that explain the refusal. Showing them turns "rejected" into
+  // something the operator can act on.
+  const detail =
     error instanceof ApiError && error.problem.sku
-      ? ` (${error.problem.sku}: requested ${error.problem.requested}, available ${error.problem.available})`
-      : '';
+      ? `${error.problem.sku} — ${error.problem.requested} requested, ${error.problem.available} available`
+      : null;
 
   return (
-    <p className="banner banner--error" role="alert">
-      {message}
-      {extra}
-    </p>
+    <div className="message-bar" role="alert">
+      <ErrorCircleIcon />
+      <span>
+        {message}
+        {detail && <span className="detail">{detail}</span>}
+      </span>
+    </div>
   );
 }
 
@@ -30,38 +83,59 @@ function StatusBadge({ status }: { status: HoldStatus }) {
   return <span className={`badge badge--${status.toLowerCase()}`}>{status}</span>;
 }
 
+/** Placeholder rows that hold a card height steady while the first fetch lands. */
+function Skeleton({ rows, label }: { rows: number; label: string }) {
+  return (
+    <div className="skeleton" role="status" aria-label={label}>
+      {Array.from({ length: rows }, (_, index) => (
+        <div className="shimmer" key={index} style={{ width: `${100 - index * 14}%` }} />
+      ))}
+    </div>
+  );
+}
+
 export function InventoryDashboard() {
   const { data, isPending, isError, error } = useInventory();
 
   return (
-    <section className="panel">
-      <h2>Inventory</h2>
-      <ErrorBanner error={isError ? error : null} />
+    <section className="card" aria-labelledby="inventory-heading">
+      <div className="card-header">
+        <h2 id="inventory-heading">Inventory</h2>
+        {data && <span className="count">{data.length} products</span>}
+      </div>
+
+      <MessageBar error={isError ? error : null} />
 
       {isPending ? (
-        <p className="muted">Loading inventory…</p>
+        <Skeleton rows={4} label="Loading inventory" />
       ) : (
-        <table>
+        <table className="grid">
           <thead>
             <tr>
-              <th>Product</th>
-              <th className="num">Available</th>
-              <th className="num">Held</th>
-              <th className="num">Total</th>
+              <th scope="col">Product</th>
+              <th scope="col" className="num">
+                Available
+              </th>
+              <th scope="col" className="num">
+                Held
+              </th>
+              <th scope="col" className="num">
+                Total
+              </th>
             </tr>
           </thead>
           <tbody>
             {data?.map((item) => (
               <tr key={item.sku}>
-                <td>
+                <td className="primary-cell">
                   {item.name}
-                  <span className="muted sku">{item.sku}</span>
+                  <span className="secondary">{item.sku}</span>
                 </td>
-                <td className={`num ${item.availableQuantity === 0 ? 'zero' : ''}`}>
+                <td className={`num ${item.availableQuantity === 0 ? 'depleted' : ''}`}>
                   {item.availableQuantity}
                 </td>
                 <td className="num">{item.heldQuantity}</td>
-                <td className="num muted">{item.totalQuantity}</td>
+                <td className="num num--subtle">{item.totalQuantity}</td>
               </tr>
             ))}
           </tbody>
@@ -84,6 +158,7 @@ export function CreateHoldForm() {
   const [lines, setLines] = useState<Line[]>([{ sku: '', quantity: 1 }]);
 
   const available = useMemo(() => inventory ?? [], [inventory]);
+  const removable = lines.length > 1;
 
   const updateLine = (index: number, patch: Partial<Line>) =>
     setLines((current) => current.map((line, i) => (i === index ? { ...line, ...patch } : line)));
@@ -100,67 +175,79 @@ export function CreateHoldForm() {
   };
 
   return (
-    <section className="panel">
-      <h2>Place a hold</h2>
-      <ErrorBanner error={createHold.error} />
+    <section className="card" aria-labelledby="place-hold-heading">
+      <div className="card-header">
+        <h2 id="place-hold-heading">Place a hold</h2>
+      </div>
+
+      <MessageBar error={createHold.error} />
 
       <form onSubmit={submit}>
-        <label>
-          Customer
+        <div className="field">
+          <label className="label" htmlFor="customer-id">
+            Customer
+          </label>
           <input
+            id="customer-id"
             value={customerId}
             onChange={(e) => setCustomerId(e.target.value)}
             required
             maxLength={64}
           />
-        </label>
+        </div>
 
-        {lines.map((line, index) => (
-          <div className="line" key={index}>
-            <select
-              value={line.sku}
-              onChange={(e) => updateLine(index, { sku: e.target.value })}
-              required
-            >
-              <option value="">Select a product…</option>
-              {available.map((item) => (
-                <option key={item.sku} value={item.sku} disabled={item.availableQuantity === 0}>
-                  {item.name} ({item.availableQuantity} available)
-                </option>
-              ))}
-            </select>
-
-            <input
-              type="number"
-              min={1}
-              value={line.quantity}
-              onChange={(e) => updateLine(index, { quantity: Number(e.target.value) })}
-              required
-            />
-
-            {lines.length > 1 && (
-              <button
-                type="button"
-                className="ghost"
-                onClick={() => setLines((c) => c.filter((_, i) => i !== index))}
-                aria-label="Remove line"
+        <div className="field">
+          <span className="label">Products</span>
+          {lines.map((line, index) => (
+            <div className={`line${removable ? ' removable' : ''}`} key={index}>
+              <select
+                value={line.sku}
+                onChange={(e) => updateLine(index, { sku: e.target.value })}
+                aria-label={`Product, line ${index + 1}`}
+                required
               >
-                ×
-              </button>
-            )}
-          </div>
-        ))}
+                <option value="">Select a product…</option>
+                {available.map((item) => (
+                  <option key={item.sku} value={item.sku} disabled={item.availableQuantity === 0}>
+                    {item.name} ({item.availableQuantity} available)
+                  </option>
+                ))}
+              </select>
+
+              <input
+                type="number"
+                min={1}
+                value={line.quantity}
+                onChange={(e) => updateLine(index, { quantity: Number(e.target.value) })}
+                aria-label={`Quantity, line ${index + 1}`}
+                required
+              />
+
+              {removable && (
+                <button
+                  type="button"
+                  className="icon"
+                  onClick={() => setLines((c) => c.filter((_, i) => i !== index))}
+                  aria-label={`Remove line ${index + 1}`}
+                >
+                  <DismissIcon />
+                </button>
+              )}
+            </div>
+          ))}
+        </div>
 
         <div className="actions">
           <button
             type="button"
-            className="ghost"
+            className="subtle"
             onClick={() => setLines((c) => [...c, { sku: '', quantity: 1 }])}
           >
-            + Add product
+            <AddIcon />
+            Add product
           </button>
 
-          <button type="submit" disabled={createHold.isPending}>
+          <button type="submit" className="primary" disabled={createHold.isPending}>
             {createHold.isPending ? 'Placing…' : 'Place hold'}
           </button>
         </div>
@@ -183,20 +270,19 @@ function HoldRow({ hold, now }: { hold: Hold; now: number }) {
       <td>
         <StatusBadge status={hold.status} />
       </td>
-      <td>
+      <td className="primary-cell">
         {hold.items.map((item) => (
           <div key={item.sku}>
             {item.quantity} × {item.name}
           </div>
         ))}
-        <span className="muted sku">{hold.customerId}</span>
       </td>
-      <td className="num mono">
+      <td>{hold.customerId}</td>
+      <td className="num countdown">
         {hold.status === 'Active' ? formatCountdown(hold.expiresAt, now) : '—'}
       </td>
       <td className="num">
         <button
-          className="danger"
           onClick={confirmRelease}
           disabled={hold.status !== 'Active' || releaseHold.isPending}
         >
@@ -211,21 +297,32 @@ export function ActiveHoldsList() {
   const { data, isPending, isError, error } = useHolds();
   const now = useNow();
 
+  const activeCount = data?.filter((hold) => hold.status === 'Active').length ?? 0;
+
   return (
-    <section className="panel">
-      <h2>Active holds</h2>
-      <ErrorBanner error={isError ? error : null} />
+    <section className="card" aria-labelledby="holds-heading">
+      <div className="card-header">
+        <h2 id="holds-heading">Holds</h2>
+        {data && <span className="count">{activeCount} active</span>}
+      </div>
+
+      <MessageBar error={isError ? error : null} />
 
       {isPending ? (
-        <p className="muted">Loading holds…</p>
+        <Skeleton rows={3} label="Loading holds" />
       ) : data && data.length > 0 ? (
-        <table>
+        <table className="grid">
           <thead>
             <tr>
-              <th>Status</th>
-              <th>Items</th>
-              <th className="num">Expires in</th>
-              <th className="num">Action</th>
+              <th scope="col">Status</th>
+              <th scope="col">Items</th>
+              <th scope="col">Customer</th>
+              <th scope="col" className="num">
+                Expires in
+              </th>
+              <th scope="col" className="num">
+                Action
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -235,8 +332,8 @@ export function ActiveHoldsList() {
           </tbody>
         </table>
       ) : (
-        <p className="muted">
-          No active holds. Place one above — it will expire on its own and return the stock.
+        <p className="empty">
+          No holds yet. Place one and it will expire on its own, returning the stock.
         </p>
       )}
     </section>

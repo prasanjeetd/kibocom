@@ -38,6 +38,27 @@ invariant breaks silently. See ADR‑003.
 
 ---
 
+## Live demo
+
+| | |
+|---|---|
+| Web app | https://kibocom.pjeet4411.workers.dev |
+| API | https://inventory-hold-api.onrender.com |
+| Health | https://inventory-hold-api.onrender.com/health |
+
+> **Free-tier notes.** The API sleeps after ~15 minutes idle, so the first request may take 30–50
+> seconds to wake it — reload once if the page looks empty. Hold expiry is set to **1 minute** on
+> this instance so expiration is observable; the default is 15 minutes.
+
+Place a hold, watch the inventory drop and the countdown tick, then leave it alone for a minute:
+the hold expires on its own and the stock returns, with nothing touching it. That single
+interaction exercises atomic deduction, the expiry sweeper, event publishing and cache
+invalidation together.
+
+Prefer to evaluate locally? `docker compose up --build` needs no accounts and has no cold start.
+
+---
+
 ## Quick start
 
 ```bash

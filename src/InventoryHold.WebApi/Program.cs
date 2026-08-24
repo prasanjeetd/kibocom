@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Text.Json.Serialization;
 using InventoryHold.Infrastructure;
 using InventoryHold.Infrastructure.Mongo;
@@ -11,6 +12,20 @@ using Scalar.AspNetCore;
 DotEnv.LoadFromAncestors();
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Stamp every log line with the trace id, so all the work done for one request can be pulled
+// back together - and so a traceId returned in a ProblemDetails body can be looked up directly.
+builder.Logging.Configure(options => options.ActivityTrackingOptions =
+    ActivityTrackingOptions.TraceId | ActivityTrackingOptions.SpanId);
+
+if (!builder.Environment.IsDevelopment())
+{
+    // Plain text is for humans at a terminal. Anything shipping to an aggregator needs to be
+    // parseable without regex, and the named placeholders already used throughout survive as
+    // real fields rather than being flattened into a sentence.
+    builder.Logging.ClearProviders();
+    builder.Logging.AddJsonConsole(options => options.IncludeScopes = true);
+}
 
 builder.Services
     .AddControllers()
@@ -38,6 +53,39 @@ builder.Services.AddCors(options => options.AddDefaultPolicy(policy => policy
     .AllowAnyMethod()));
 
 var app = builder.Build();
+
+// One line per API request: method, path, outcome, duration. Health probes are skipped because
+// an orchestrator polling every few seconds would otherwise drown everything else out.
+//
+// Registered ahead of UseExceptionHandler on purpose. Middleware registered first sits outermost,
+// so this only sees the final status code if the exception handler has already run and written
+// it. Placed after, every handled domain failure would be logged as a 200.
+var requestLogger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Http");
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path.StartsWithSegments("/health"))
+    {
+        await next();
+        return;
+    }
+
+    var startedAt = Stopwatch.GetTimestamp();
+    try
+    {
+        await next();
+    }
+    finally
+    {
+        var elapsed = Stopwatch.GetElapsedTime(startedAt);
+        requestLogger.Log(
+            context.Response.StatusCode >= 500 ? LogLevel.Error : LogLevel.Information,
+            "{Method} {Path} responded {StatusCode} in {ElapsedMs:0.0}ms",
+            context.Request.Method,
+            context.Request.Path.Value,
+            context.Response.StatusCode,
+            elapsed.TotalMilliseconds);
+    }
+});
 
 app.UseExceptionHandler();
 app.UseCors();

@@ -717,24 +717,26 @@ button:disabled {
   gap: var(--space-5);
 }
 
-.ops-main {
+.ops-side {
   display: grid;
   gap: var(--space-5);
+  align-content: start;
   min-width: 0;
 }
 
 @media (min-width: 1040px) {
   .ops {
-    grid-template-columns: 360px minmax(0, 1fr);
+    grid-template-columns: 420px minmax(0, 1fr);
     align-items: start;
   }
+}
 
-  /* The form follows you down the page: stock levels and the decision made against them
-     should never be separated by a scroll. */
-  .ops > .card:first-child {
-    position: sticky;
-    top: var(--space-5);
-  }
+/* Number columns carry at most three digits, so they need far less horizontal room than the
+   default cell padding gives them — which is what keeps the inventory table readable inside
+   the narrower left column. */
+.grid .num {
+  padding-left: var(--space-2);
+  padding-right: var(--space-2);
 }
 
 .stock-hint {

@@ -39,15 +39,15 @@ export default function App() {
 
       <main>
         {tab === 'operations' ? (
-          /* The form sticks to the viewport while the right column scrolls, so stock levels stay
-             on screen the whole time a hold is being filled in — the numbers you are deciding
-             against and the decision itself are never separated by a scroll. */
+          /* Left column is the input side — what you are about to do, and the stock you are
+             deciding against, adjacent. Right column is the output side: the holds that exist and
+             can be released. Cause and effect sit side by side rather than a scroll apart. */
           <div className="ops">
-            <CreateHoldForm />
-            <div className="ops-main">
+            <div className="ops-side">
+              <CreateHoldForm />
               <InventoryDashboard />
-              <ActiveHoldsList />
             </div>
+            <ActiveHoldsList />
           </div>
         ) : (
           <LogsPage />

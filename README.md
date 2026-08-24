@@ -257,6 +257,12 @@ nesting (e.g. `Mongo__ConnectionString`).
   several ticks.
 - **No authentication.** Explicitly out of scope.
 
+## Deployment
+
+An optional free-tier public demo (Render + Cloudflare Pages, no credit card required) is described
+in [DEPLOY.md](DEPLOY.md). Because every connection is an environment variable, the same image runs
+locally and in the cloud with no code change.
+
 ## AI usage
 
 See [AI-USAGE.md](AI-USAGE.md).

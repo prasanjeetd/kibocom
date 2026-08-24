@@ -1,0 +1,42 @@
+# Render Blueprint for the API. Free tier, no card required.
+#
+# Secrets are marked `sync: false`, which means Render prompts for them in the dashboard
+# instead of reading them from this file - connection strings never enter the repository.
+
+services:
+  - type: web
+    name: inventory-hold-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    plan: free
+    region: oregon
+    healthCheckPath: /health
+
+    envVars:
+      - key: PORT
+        value: "8080"
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+
+      # --- set these in the Render dashboard ---
+      - key: Mongo__ConnectionString      # MongoDB Atlas M0
+        sync: false
+      - key: Redis__ConnectionString      # Upstash
+        sync: false
+      - key: RabbitMq__Uri                # CloudAMQP
+        sync: false
+      - key: Cors__AllowedOrigins__0      # the deployed frontend origin
+        sync: false
+
+      - key: Mongo__Database
+        value: inventoryhold
+      - key: Mongo__UseTransactions
+        value: "true"
+
+      # A one-minute lifetime on the demo so a reviewer can actually watch a hold
+      # expire and its stock return. Production default is 15 minutes.
+      - key: Hold__ExpirationMinutes
+        value: "1"
+      - key: Hold__SweeperIntervalSeconds
+        value: "5"

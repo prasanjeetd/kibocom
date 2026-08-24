@@ -1,0 +1,212 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TestRun id="4727556d-39df-47b2-979f-d2ebe0c0e6d8" name="PRASANJEET@DESKTOP-83CEBOB 2026-08-24 16:13:42" runUser="DESKTOP-83CEBOB\PRASANJEET" xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <Times creation="2026-08-24T16:13:42.5204545+05:30" queuing="2026-08-24T16:13:42.5204548+05:30" start="2026-08-24T16:13:41.8693993+05:30" finish="2026-08-24T16:13:42.5474787+05:30" />
+  <TestSettings name="default" id="14615283-655b-4e41-a43d-4ecfdde5dc52">
+    <Deployment runDeploymentRoot="PRASANJEET_DESKTOP-83CEBOB_2026-08-24_16_13_42" />
+  </TestSettings>
+  <Results>
+    <UnitTestResult executionId="a6d90ed9-e21d-49fa-a500-7f5c61746b2f" testId="a6897f49-4148-a0ab-0e50-307e705b7bcc" testName="InventoryItem_DerivesHeldQuantityFromTheInvariant" computerName="DESKTOP-83CEBOB" duration="00:00:00.0004640" startTime="2026-08-24T16:13:42.4687266+05:30" endTime="2026-08-24T16:13:42.4691909+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a6d90ed9-e21d-49fa-a500-7f5c61746b2f" />
+    <UnitTestResult executionId="1f419f17-6df9-4d6e-b8f8-fec859935d70" testId="141cb9f0-6166-eb26-328d-0468ef907a2b" testName="Release_OnAnAlreadyReleasedHold_IsAConflict" computerName="DESKTOP-83CEBOB" duration="00:00:00.0010460" startTime="2026-08-24T16:13:42.4893231+05:30" endTime="2026-08-24T16:13:42.4903691+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1f419f17-6df9-4d6e-b8f8-fec859935d70" />
+    <UnitTestResult executionId="640b2f07-936e-4af7-b960-c5ec3394e470" testId="25e9c733-972d-0c17-e3b8-1c2b8c16a2b7" testName="HoldItem_WithNonPositiveQuantity_IsRejected(0)" computerName="DESKTOP-83CEBOB" duration="00:00:00.0003020" startTime="2026-08-24T16:13:42.4681455+05:30" endTime="2026-08-24T16:13:42.4684476+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="640b2f07-936e-4af7-b960-c5ec3394e470" />
+    <UnitTestResult executionId="d6754a6e-b73e-4f9b-81ad-f6bb53cfca30" testId="1b7a4676-f796-5f2e-8777-509d6b28a74d" testName="Create_WithDuplicateSku_IsRejected" computerName="DESKTOP-83CEBOB" duration="00:00:00.0025270" startTime="2026-08-24T16:13:42.4629240+05:30" endTime="2026-08-24T16:13:42.4654508+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d6754a6e-b73e-4f9b-81ad-f6bb53cfca30" />
+    <UnitTestResult executionId="ffdfa2fe-f27e-4d13-85e9-2b8f42b5bfc4" testId="3a81831d-2eae-7a0d-c3c5-98edee5cc41c" testName="Create_OnSuccess_DeductsStock_InvalidatesCache_AndPublishes" computerName="DESKTOP-83CEBOB" duration="00:00:00.0104750" startTime="2026-08-24T16:13:42.4709025+05:30" endTime="2026-08-24T16:13:42.4813772+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="ffdfa2fe-f27e-4d13-85e9-2b8f42b5bfc4" />
+    <UnitTestResult executionId="74f09123-cdab-438a-8b31-287c8e46f660" testId="a6b3204f-ff82-3e07-ef26-e2545e2ea68d" testName="Create_WithNoItems_IsRejected" computerName="DESKTOP-83CEBOB" duration="00:00:00.0004640" startTime="2026-08-24T16:13:42.4654704+05:30" endTime="2026-08-24T16:13:42.4659343+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="74f09123-cdab-438a-8b31-287c8e46f660" />
+    <UnitTestResult executionId="358d6550-b77c-407d-b5b3-5b88fcb357e2" testId="08f0a623-af0b-fd41-4e58-29b14392fc78" testName="StatusAt_PastTheDeadline_ReportsExpired_EvenWhileStorageStillSaysActive" computerName="DESKTOP-83CEBOB" duration="00:00:00.0002970" startTime="2026-08-24T16:13:42.4693254+05:30" endTime="2026-08-24T16:13:42.4696226+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="358d6550-b77c-407d-b5b3-5b88fcb357e2" />
+    <UnitTestResult executionId="83a19c41-d61a-4f67-8049-d9d20c674b5c" testId="c1a31deb-9cd6-f485-2622-2b9fe89e4cf3" testName="Create_WhenStockRunsOut_PublishesNothingAndLeavesTheCacheAlone" computerName="DESKTOP-83CEBOB" duration="00:00:00.0025330" startTime="2026-08-24T16:13:42.4813938+05:30" endTime="2026-08-24T16:13:42.4839268+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="83a19c41-d61a-4f67-8049-d9d20c674b5c" />
+    <UnitTestResult executionId="12319191-46dd-43a1-aab9-a866d6a89a6f" testId="da4273cb-274e-376e-f610-a7bf8cdee2fd" testName="EnsureReleasable_OnAnExpiredHold_ReportsItAsNoLongerActive" computerName="DESKTOP-83CEBOB" duration="00:00:00.0018870" startTime="2026-08-24T16:13:42.4662203+05:30" endTime="2026-08-24T16:13:42.4681073+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="12319191-46dd-43a1-aab9-a866d6a89a6f" />
+    <UnitTestResult executionId="cde44d09-6c90-44ad-a5ab-c6327e2fe975" testId="065724eb-a2a9-a0ad-9a85-db298f076941" testName="GetAll_OnACacheMiss_ReadsThroughAndPopulatesTheCache" computerName="DESKTOP-83CEBOB" duration="00:00:00.0053220" startTime="2026-08-24T16:13:42.4275190+05:30" endTime="2026-08-24T16:13:42.4328403+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="cde44d09-6c90-44ad-a5ab-c6327e2fe975" />
+    <UnitTestResult executionId="d5353b51-e9ae-4162-b25c-d56de19c61bd" testId="c426f52f-cb35-cf7b-8f95-260b77ef042c" testName="TimeRemaining_CountsDown_ThenClampsToZero" computerName="DESKTOP-83CEBOB" duration="00:00:00.0007480" startTime="2026-08-24T16:13:42.4696297+05:30" endTime="2026-08-24T16:13:42.4703776+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d5353b51-e9ae-4162-b25c-d56de19c61bd" />
+    <UnitTestResult executionId="0e849fa3-5673-4a29-87fe-501a273b1278" testId="e2a96826-a3da-4c65-5147-173cddbdaed7" testName="Get_WhenTheHoldNeverExisted_IsNotFound" computerName="DESKTOP-83CEBOB" duration="00:00:00.0012400" startTime="2026-08-24T16:13:42.4868491+05:30" endTime="2026-08-24T16:13:42.4880892+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0e849fa3-5673-4a29-87fe-501a273b1278" />
+    <UnitTestResult executionId="d09badd3-96ed-4438-8a61-79f1fec40182" testId="c9fa828f-cdf9-a0c1-3c10-187e09f60f4f" testName="Create_DerivesExpiryFromTheConfiguredLifetime" computerName="DESKTOP-83CEBOB" duration="00:00:00.0082170" startTime="2026-08-24T16:13:42.4546794+05:30" endTime="2026-08-24T16:13:42.4628962+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="d09badd3-96ed-4438-8a61-79f1fec40182" />
+    <UnitTestResult executionId="aec1cf6c-8625-4c16-9be1-7c4de2c31891" testId="bbceb54a-fc9c-cae2-7e4d-5540aaf5efb7" testName="HoldItem_WithNonPositiveQuantity_IsRejected(-3)" computerName="DESKTOP-83CEBOB" duration="00:00:00.0002410" startTime="2026-08-24T16:13:42.4684553+05:30" endTime="2026-08-24T16:13:42.4686964+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="aec1cf6c-8625-4c16-9be1-7c4de2c31891" />
+    <UnitTestResult executionId="b8e0235e-a4b9-4a53-ae74-f2a7e27f9add" testId="b063b296-5bfa-bd64-97a9-a9679604fa34" testName="Release_WhenTheSweeperWinsTheRace_IsAConflict_AndRestoresStockOnlyOnce" computerName="DESKTOP-83CEBOB" duration="00:00:00.0019440" startTime="2026-08-24T16:13:42.4919001+05:30" endTime="2026-08-24T16:13:42.4938439+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b8e0235e-a4b9-4a53-ae74-f2a7e27f9add" />
+    <UnitTestResult executionId="466514e4-6377-43a7-b7f4-aba8da3bb5b0" testId="b7a80b09-98a6-4a65-1d79-e526b19dc447" testName="GetAll_WhenRedisIsDown_StillServesFromTheDatabase" computerName="DESKTOP-83CEBOB" duration="00:00:00.0206660" startTime="2026-08-24T16:13:42.4328664+05:30" endTime="2026-08-24T16:13:42.4535324+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Failed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="466514e4-6377-43a7-b7f4-aba8da3bb5b0">
+      <Output>
+        <ErrorInfo>
+          <Message>  Assert.That(async () =&gt; await _sut.GetAllAsync(), Throws.Nothing)&#xD;
+  Expected: No Exception to be thrown&#xD;
+  But was:  &lt;System.InvalidOperationException: redis down&#xD;
+   at InventoryHold.Infrastructure.Redis.CachedInventoryRepository.GetAllAsync(CancellationToken cancellationToken) in E:\Work\Interviews\KiboCommerce\src\InventoryHold.Infrastructure\Redis\RedisCacheService.cs:line 98&#xD;
+   at InventoryHold.UnitTests.CachedInventoryRepositoryTests.&lt;GetAll_WhenRedisIsDown_StillServesFromTheDatabase&gt;b__7_0() in E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\CachingAndArchitectureTests.cs:line 68&#xD;
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()&#xD;
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)&#xD;
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)&#xD;
+   at NUnit.Framework.Internal.ExceptionHelper.RecordException(Delegate parameterlessDelegate, String parameterName)&gt;&#xD;
+</Message>
+          <StackTrace>   at InventoryHold.UnitTests.CachedInventoryRepositoryTests.GetAll_WhenRedisIsDown_StillServesFromTheDatabase() in E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\CachingAndArchitectureTests.cs:line 68&#xD;
+   at NUnit.Framework.Internal.TaskAwaitAdapter.GenericAdapter`1.GetResult()&#xD;
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await[TResult](TestExecutionContext context, Func`1 invoke)&#xD;
+   at NUnit.Framework.Internal.AsyncToSyncAdapter.Await(TestExecutionContext context, Func`1 invoke)&#xD;
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.RunTestMethod(TestExecutionContext context)&#xD;
+   at NUnit.Framework.Internal.Commands.TestMethodCommand.Execute(TestExecutionContext context)&#xD;
+   at NUnit.Framework.Internal.Commands.BeforeAndAfterTestCommand.&lt;&gt;c__DisplayClass1_0.&lt;Execute&gt;b__0()&#xD;
+   at NUnit.Framework.Internal.Commands.DelegatingTestCommand.RunTestMethodInThreadAbortSafeZone(TestExecutionContext context, Action action)&#xD;
+
+1)    at InventoryHold.UnitTests.CachedInventoryRepositoryTests.GetAll_WhenRedisIsDown_StillServesFromTheDatabase() in E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\CachingAndArchitectureTests.cs:line 68&#xD;
+   at System.Runtime.CompilerServices.AsyncMethodBuilderCore.Start[TStateMachine](TStateMachine&amp; stateMachine)&#xD;
+   at InventoryHold.UnitTests.CachedInventoryRepositoryTests.GetAll_WhenRedisIsDown_StillServesFromTheDatabase()&#xD;
+
+</StackTrace>
+        </ErrorInfo>
+      </Output>
+    </UnitTestResult>
+    <UnitTestResult executionId="6170f222-da91-443f-8efa-5dff4417b42b" testId="16a7c4da-6b6c-1ac8-4dc7-27ab5df0794a" testName="Create_WithUnknownSku_IsRejectedBeforeAnyStockIsTouched" computerName="DESKTOP-83CEBOB" duration="00:00:00.0010230" startTime="2026-08-24T16:13:42.4839397+05:30" endTime="2026-08-24T16:13:42.4849622+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6170f222-da91-443f-8efa-5dff4417b42b" />
+    <UnitTestResult executionId="b5253f85-8889-461d-89e4-568ad88940fa" testId="ba36e7d1-51a9-23ce-4106-2c2e7c209e96" testName="Domain_DependsOnNoInfrastructureTechnology" computerName="DESKTOP-83CEBOB" duration="00:00:00.0106580" startTime="2026-08-24T16:13:42.3399040+05:30" endTime="2026-08-24T16:13:42.3505623+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="b5253f85-8889-461d-89e4-568ad88940fa" />
+    <UnitTestResult executionId="71eb78e4-ee06-4b9d-93cf-2b45b234be09" testId="20ac93e4-1b74-506f-dfd5-f5423b98e0ce" testName="Contracts_DependOnNothingButTheFramework" computerName="DESKTOP-83CEBOB" duration="00:00:00.0483480" startTime="2026-08-24T16:13:42.2907190+05:30" endTime="2026-08-24T16:13:42.3390270+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="71eb78e4-ee06-4b9d-93cf-2b45b234be09" />
+    <UnitTestResult executionId="dff99759-7f3d-41e3-a93f-73f0a3638e82" testId="b44d0e17-1e6f-7942-d437-dedfe9865b05" testName="Release_OnAHoldThatNeverExisted_IsNotFound" computerName="DESKTOP-83CEBOB" duration="00:00:00.0012140" startTime="2026-08-24T16:13:42.4881004+05:30" endTime="2026-08-24T16:13:42.4893144+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="dff99759-7f3d-41e3-a93f-73f0a3638e82" />
+    <UnitTestResult executionId="a7826455-47ce-44e8-994a-54f7445a02c3" testId="ecd54ab8-abf1-03b0-f6b3-b9e804f068d2" testName="GetAll_OnACacheHit_NeverTouchesTheDatabase" computerName="DESKTOP-83CEBOB" duration="00:00:00.0750820" startTime="2026-08-24T16:13:42.3524087+05:30" endTime="2026-08-24T16:13:42.4274908+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="a7826455-47ce-44e8-994a-54f7445a02c3" />
+    <UnitTestResult executionId="1d7e2875-70ad-4b45-9a9b-898c49dee232" testId="6c42059d-aa8a-fbaf-fe64-7bdeb1be74b5" testName="Release_OnSuccess_RestoresStock_InvalidatesCache_AndPublishes" computerName="DESKTOP-83CEBOB" duration="00:00:00.0015030" startTime="2026-08-24T16:13:42.4903885+05:30" endTime="2026-08-24T16:13:42.4918912+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="1d7e2875-70ad-4b45-9a9b-898c49dee232" />
+    <UnitTestResult executionId="0255855f-cc20-4dd6-ac4b-d41cc15cb8a9" testId="03e3d11b-bd3c-9964-e282-d96e168fbebf" testName="Get_PastTheDeadline_ReportsExpired_WithoutWaitingForTheSweeper" computerName="DESKTOP-83CEBOB" duration="00:00:00.0018670" startTime="2026-08-24T16:13:42.4849723+05:30" endTime="2026-08-24T16:13:42.4868395+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="0255855f-cc20-4dd6-ac4b-d41cc15cb8a9" />
+    <UnitTestResult executionId="153c9a39-f46f-4ac1-bb46-20ca32adef15" testId="9745a2dc-4ea8-8d44-5b9c-4b3e97f4ae03" testName="GetBySku_IsNeverCached_BecauseItFeedsTheDeductionDecision" computerName="DESKTOP-83CEBOB" duration="00:00:00.0009370" startTime="2026-08-24T16:13:42.4536189+05:30" endTime="2026-08-24T16:13:42.4545554+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="153c9a39-f46f-4ac1-bb46-20ca32adef15" />
+    <UnitTestResult executionId="6c18e7f8-d4a5-4d58-8638-7280f4a9acef" testId="c4a38fe8-c6b5-4392-0832-5144c9a62219" testName="Create_WithoutCustomer_IsRejected" computerName="DESKTOP-83CEBOB" duration="00:00:00.0002640" startTime="2026-08-24T16:13:42.4659491+05:30" endTime="2026-08-24T16:13:42.4662127+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="6c18e7f8-d4a5-4d58-8638-7280f4a9acef" />
+    <UnitTestResult executionId="8019c67a-02bd-4269-9f7f-84e138eb7692" testId="97d8288e-0653-7d45-bb2d-59955540d43a" testName="StatusAt_ExactlyOnTheDeadline_IsExpired" computerName="DESKTOP-83CEBOB" duration="00:00:00.0001190" startTime="2026-08-24T16:13:42.4691993+05:30" endTime="2026-08-24T16:13:42.4693185+05:30" testType="13cdc9d9-ddb5-4fa4-a97d-d965ccfc6d4b" outcome="Passed" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" relativeResultsDirectory="8019c67a-02bd-4269-9f7f-84e138eb7692" />
+  </Results>
+  <TestDefinitions>
+    <UnitTest name="HoldItem_WithNonPositiveQuantity_IsRejected(0)" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="25e9c733-972d-0c17-e3b8-1c2b8c16a2b7">
+      <Execution id="640b2f07-936e-4af7-b960-c5ec3394e470" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="HoldItem_WithNonPositiveQuantity_IsRejected(0)" />
+    </UnitTest>
+    <UnitTest name="Create_WithNoItems_IsRejected" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="a6b3204f-ff82-3e07-ef26-e2545e2ea68d">
+      <Execution id="74f09123-cdab-438a-8b31-287c8e46f660" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="Create_WithNoItems_IsRejected" />
+    </UnitTest>
+    <UnitTest name="Domain_DependsOnNoInfrastructureTechnology" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="ba36e7d1-51a9-23ce-4106-2c2e7c209e96">
+      <Execution id="b5253f85-8889-461d-89e4-568ad88940fa" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.ArchitectureTests" name="Domain_DependsOnNoInfrastructureTechnology" />
+    </UnitTest>
+    <UnitTest name="Create_OnSuccess_DeductsStock_InvalidatesCache_AndPublishes" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="3a81831d-2eae-7a0d-c3c5-98edee5cc41c">
+      <Execution id="ffdfa2fe-f27e-4d13-85e9-2b8f42b5bfc4" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldServiceTests" name="Create_OnSuccess_DeductsStock_InvalidatesCache_AndPublishes" />
+    </UnitTest>
+    <UnitTest name="Release_OnSuccess_RestoresStock_InvalidatesCache_AndPublishes" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="6c42059d-aa8a-fbaf-fe64-7bdeb1be74b5">
+      <Execution id="1d7e2875-70ad-4b45-9a9b-898c49dee232" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldServiceTests" name="Release_OnSuccess_RestoresStock_InvalidatesCache_AndPublishes" />
+    </UnitTest>
+    <UnitTest name="StatusAt_ExactlyOnTheDeadline_IsExpired" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="97d8288e-0653-7d45-bb2d-59955540d43a">
+      <Execution id="8019c67a-02bd-4269-9f7f-84e138eb7692" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="StatusAt_ExactlyOnTheDeadline_IsExpired" />
+    </UnitTest>
+    <UnitTest name="HoldItem_WithNonPositiveQuantity_IsRejected(-3)" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="bbceb54a-fc9c-cae2-7e4d-5540aaf5efb7">
+      <Execution id="aec1cf6c-8625-4c16-9be1-7c4de2c31891" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="HoldItem_WithNonPositiveQuantity_IsRejected(-3)" />
+    </UnitTest>
+    <UnitTest name="GetAll_WhenRedisIsDown_StillServesFromTheDatabase" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="b7a80b09-98a6-4a65-1d79-e526b19dc447">
+      <Execution id="466514e4-6377-43a7-b7f4-aba8da3bb5b0" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.CachedInventoryRepositoryTests" name="GetAll_WhenRedisIsDown_StillServesFromTheDatabase" />
+    </UnitTest>
+    <UnitTest name="Contracts_DependOnNothingButTheFramework" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="20ac93e4-1b74-506f-dfd5-f5423b98e0ce">
+      <Execution id="71eb78e4-ee06-4b9d-93cf-2b45b234be09" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.ArchitectureTests" name="Contracts_DependOnNothingButTheFramework" />
+    </UnitTest>
+    <UnitTest name="Release_WhenTheSweeperWinsTheRace_IsAConflict_AndRestoresStockOnlyOnce" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="b063b296-5bfa-bd64-97a9-a9679604fa34">
+      <Execution id="b8e0235e-a4b9-4a53-ae74-f2a7e27f9add" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldServiceTests" name="Release_WhenTheSweeperWinsTheRace_IsAConflict_AndRestoresStockOnlyOnce" />
+    </UnitTest>
+    <UnitTest name="Get_PastTheDeadline_ReportsExpired_WithoutWaitingForTheSweeper" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="03e3d11b-bd3c-9964-e282-d96e168fbebf">
+      <Execution id="0255855f-cc20-4dd6-ac4b-d41cc15cb8a9" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldServiceTests" name="Get_PastTheDeadline_ReportsExpired_WithoutWaitingForTheSweeper" />
+    </UnitTest>
+    <UnitTest name="Create_WithUnknownSku_IsRejectedBeforeAnyStockIsTouched" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="16a7c4da-6b6c-1ac8-4dc7-27ab5df0794a">
+      <Execution id="6170f222-da91-443f-8efa-5dff4417b42b" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldServiceTests" name="Create_WithUnknownSku_IsRejectedBeforeAnyStockIsTouched" />
+    </UnitTest>
+    <UnitTest name="Get_WhenTheHoldNeverExisted_IsNotFound" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="e2a96826-a3da-4c65-5147-173cddbdaed7">
+      <Execution id="0e849fa3-5673-4a29-87fe-501a273b1278" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldServiceTests" name="Get_WhenTheHoldNeverExisted_IsNotFound" />
+    </UnitTest>
+    <UnitTest name="GetAll_OnACacheHit_NeverTouchesTheDatabase" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="ecd54ab8-abf1-03b0-f6b3-b9e804f068d2">
+      <Execution id="a7826455-47ce-44e8-994a-54f7445a02c3" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.CachedInventoryRepositoryTests" name="GetAll_OnACacheHit_NeverTouchesTheDatabase" />
+    </UnitTest>
+    <UnitTest name="Release_OnAnAlreadyReleasedHold_IsAConflict" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="141cb9f0-6166-eb26-328d-0468ef907a2b">
+      <Execution id="1f419f17-6df9-4d6e-b8f8-fec859935d70" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldServiceTests" name="Release_OnAnAlreadyReleasedHold_IsAConflict" />
+    </UnitTest>
+    <UnitTest name="EnsureReleasable_OnAnExpiredHold_ReportsItAsNoLongerActive" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="da4273cb-274e-376e-f610-a7bf8cdee2fd">
+      <Execution id="12319191-46dd-43a1-aab9-a866d6a89a6f" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="EnsureReleasable_OnAnExpiredHold_ReportsItAsNoLongerActive" />
+    </UnitTest>
+    <UnitTest name="GetBySku_IsNeverCached_BecauseItFeedsTheDeductionDecision" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="9745a2dc-4ea8-8d44-5b9c-4b3e97f4ae03">
+      <Execution id="153c9a39-f46f-4ac1-bb46-20ca32adef15" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.CachedInventoryRepositoryTests" name="GetBySku_IsNeverCached_BecauseItFeedsTheDeductionDecision" />
+    </UnitTest>
+    <UnitTest name="Release_OnAHoldThatNeverExisted_IsNotFound" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="b44d0e17-1e6f-7942-d437-dedfe9865b05">
+      <Execution id="dff99759-7f3d-41e3-a93f-73f0a3638e82" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldServiceTests" name="Release_OnAHoldThatNeverExisted_IsNotFound" />
+    </UnitTest>
+    <UnitTest name="Create_WhenStockRunsOut_PublishesNothingAndLeavesTheCacheAlone" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="c1a31deb-9cd6-f485-2622-2b9fe89e4cf3">
+      <Execution id="83a19c41-d61a-4f67-8049-d9d20c674b5c" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldServiceTests" name="Create_WhenStockRunsOut_PublishesNothingAndLeavesTheCacheAlone" />
+    </UnitTest>
+    <UnitTest name="GetAll_OnACacheMiss_ReadsThroughAndPopulatesTheCache" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="065724eb-a2a9-a0ad-9a85-db298f076941">
+      <Execution id="cde44d09-6c90-44ad-a5ab-c6327e2fe975" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.CachedInventoryRepositoryTests" name="GetAll_OnACacheMiss_ReadsThroughAndPopulatesTheCache" />
+    </UnitTest>
+    <UnitTest name="Create_DerivesExpiryFromTheConfiguredLifetime" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="c9fa828f-cdf9-a0c1-3c10-187e09f60f4f">
+      <Execution id="d09badd3-96ed-4438-8a61-79f1fec40182" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="Create_DerivesExpiryFromTheConfiguredLifetime" />
+    </UnitTest>
+    <UnitTest name="InventoryItem_DerivesHeldQuantityFromTheInvariant" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="a6897f49-4148-a0ab-0e50-307e705b7bcc">
+      <Execution id="a6d90ed9-e21d-49fa-a500-7f5c61746b2f" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="InventoryItem_DerivesHeldQuantityFromTheInvariant" />
+    </UnitTest>
+    <UnitTest name="TimeRemaining_CountsDown_ThenClampsToZero" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="c426f52f-cb35-cf7b-8f95-260b77ef042c">
+      <Execution id="d5353b51-e9ae-4162-b25c-d56de19c61bd" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="TimeRemaining_CountsDown_ThenClampsToZero" />
+    </UnitTest>
+    <UnitTest name="StatusAt_PastTheDeadline_ReportsExpired_EvenWhileStorageStillSaysActive" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="08f0a623-af0b-fd41-4e58-29b14392fc78">
+      <Execution id="358d6550-b77c-407d-b5b3-5b88fcb357e2" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="StatusAt_PastTheDeadline_ReportsExpired_EvenWhileStorageStillSaysActive" />
+    </UnitTest>
+    <UnitTest name="Create_WithoutCustomer_IsRejected" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="c4a38fe8-c6b5-4392-0832-5144c9a62219">
+      <Execution id="6c18e7f8-d4a5-4d58-8638-7280f4a9acef" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="Create_WithoutCustomer_IsRejected" />
+    </UnitTest>
+    <UnitTest name="Create_WithDuplicateSku_IsRejected" storage="e:\work\interviews\kibocommerce\src\inventoryhold.unittests\bin\debug\net10.0\inventoryhold.unittests.dll" id="1b7a4676-f796-5f2e-8777-509d6b28a74d">
+      <Execution id="d6754a6e-b73e-4f9b-81ad-f6bb53cfca30" />
+      <TestMethod codeBase="E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll" adapterTypeName="executor://nunit3testexecutor/" className="InventoryHold.UnitTests.HoldEntityTests" name="Create_WithDuplicateSku_IsRejected" />
+    </UnitTest>
+  </TestDefinitions>
+  <TestEntries>
+    <TestEntry testId="a6897f49-4148-a0ab-0e50-307e705b7bcc" executionId="a6d90ed9-e21d-49fa-a500-7f5c61746b2f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="141cb9f0-6166-eb26-328d-0468ef907a2b" executionId="1f419f17-6df9-4d6e-b8f8-fec859935d70" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="25e9c733-972d-0c17-e3b8-1c2b8c16a2b7" executionId="640b2f07-936e-4af7-b960-c5ec3394e470" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="1b7a4676-f796-5f2e-8777-509d6b28a74d" executionId="d6754a6e-b73e-4f9b-81ad-f6bb53cfca30" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="3a81831d-2eae-7a0d-c3c5-98edee5cc41c" executionId="ffdfa2fe-f27e-4d13-85e9-2b8f42b5bfc4" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="a6b3204f-ff82-3e07-ef26-e2545e2ea68d" executionId="74f09123-cdab-438a-8b31-287c8e46f660" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="08f0a623-af0b-fd41-4e58-29b14392fc78" executionId="358d6550-b77c-407d-b5b3-5b88fcb357e2" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c1a31deb-9cd6-f485-2622-2b9fe89e4cf3" executionId="83a19c41-d61a-4f67-8049-d9d20c674b5c" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="da4273cb-274e-376e-f610-a7bf8cdee2fd" executionId="12319191-46dd-43a1-aab9-a866d6a89a6f" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="065724eb-a2a9-a0ad-9a85-db298f076941" executionId="cde44d09-6c90-44ad-a5ab-c6327e2fe975" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c426f52f-cb35-cf7b-8f95-260b77ef042c" executionId="d5353b51-e9ae-4162-b25c-d56de19c61bd" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="e2a96826-a3da-4c65-5147-173cddbdaed7" executionId="0e849fa3-5673-4a29-87fe-501a273b1278" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c9fa828f-cdf9-a0c1-3c10-187e09f60f4f" executionId="d09badd3-96ed-4438-8a61-79f1fec40182" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="bbceb54a-fc9c-cae2-7e4d-5540aaf5efb7" executionId="aec1cf6c-8625-4c16-9be1-7c4de2c31891" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b063b296-5bfa-bd64-97a9-a9679604fa34" executionId="b8e0235e-a4b9-4a53-ae74-f2a7e27f9add" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b7a80b09-98a6-4a65-1d79-e526b19dc447" executionId="466514e4-6377-43a7-b7f4-aba8da3bb5b0" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="16a7c4da-6b6c-1ac8-4dc7-27ab5df0794a" executionId="6170f222-da91-443f-8efa-5dff4417b42b" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ba36e7d1-51a9-23ce-4106-2c2e7c209e96" executionId="b5253f85-8889-461d-89e4-568ad88940fa" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="20ac93e4-1b74-506f-dfd5-f5423b98e0ce" executionId="71eb78e4-ee06-4b9d-93cf-2b45b234be09" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="b44d0e17-1e6f-7942-d437-dedfe9865b05" executionId="dff99759-7f3d-41e3-a93f-73f0a3638e82" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="ecd54ab8-abf1-03b0-f6b3-b9e804f068d2" executionId="a7826455-47ce-44e8-994a-54f7445a02c3" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="6c42059d-aa8a-fbaf-fe64-7bdeb1be74b5" executionId="1d7e2875-70ad-4b45-9a9b-898c49dee232" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="03e3d11b-bd3c-9964-e282-d96e168fbebf" executionId="0255855f-cc20-4dd6-ac4b-d41cc15cb8a9" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="9745a2dc-4ea8-8d44-5b9c-4b3e97f4ae03" executionId="153c9a39-f46f-4ac1-bb46-20ca32adef15" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="c4a38fe8-c6b5-4392-0832-5144c9a62219" executionId="6c18e7f8-d4a5-4d58-8638-7280f4a9acef" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestEntry testId="97d8288e-0653-7d45-bb2d-59955540d43a" executionId="8019c67a-02bd-4269-9f7f-84e138eb7692" testListId="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+  </TestEntries>
+  <TestLists>
+    <TestList name="Results Not in a List" id="8c84fa94-04c1-424b-9868-57a2d4851a1d" />
+    <TestList name="All Loaded Results" id="19431567-8539-422a-85d7-44ee4e166bda" />
+  </TestLists>
+  <ResultSummary outcome="Failed">
+    <Counters total="26" executed="26" passed="25" failed="1" error="0" timeout="0" aborted="0" inconclusive="0" passedButRunAborted="0" notRunnable="0" notExecuted="0" disconnected="0" warning="0" completed="0" inProgress="0" pending="0" />
+    <Output>
+      <StdOut>NUnit Adapter 5.0.0.0: Test execution started&#xD;
+Running all tests in E:\Work\Interviews\KiboCommerce\src\InventoryHold.UnitTests\bin\Debug\net10.0\InventoryHold.UnitTests.dll&#xD;
+   NUnit3TestExecutor discovered 26 of 26 NUnit test cases using Current Discovery mode, Non-Explicit run&#xD;
+NUnit Adapter 5.0.0.0: Test execution complete&#xD;
+</StdOut>
+    </Output>
+  </ResultSummary>
+</TestRun>

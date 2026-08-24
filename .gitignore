@@ -1,0 +1,20 @@
+# Secrets - NEVER commit
+.env
+*.env
+!.env.example
+
+# .NET
+bin/
+obj/
+*.user
+artifacts/
+
+# Node
+node_modules/
+dist/
+.vite/
+
+# IDE / OS
+.vs/
+.idea/
+Thumbs.db

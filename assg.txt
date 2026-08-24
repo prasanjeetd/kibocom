@@ -1,0 +1,88 @@
+None
+Senior Full Stack Engineer Assignment – Inventory Hold Microservice
+Overview
+As part of our selection process, we would like you to build a focused Inventory Hold Microservice. This service allows the checkout system to place temporary holds on inventory items — when a customer begins checkout, their items are held so they can't be sold to another customer. Holds expire after a configurable duration.
+This is a common pattern in e-commerce and reflects real problems we solve at Kibo. The assignment is designed to evaluate your ability to leverage AI-augmented development workflows to deliver production-quality features across the full stack at an accelerated pace.
+We are looking for your skills in:
+● Backend architecture with .NET 10 using Domain-Driven Design patterns.
+● Database integration with MongoDB, including atomic operations for concurrency safety.
+● Caching with Redis for performance-sensitive read paths.
+● Messaging with RabbitMQ for event-driven communication.
+● Containerization with Docker and docker-compose.
+● Full-stack delivery with a React/TypeScript frontend.
+● Testing with nUnit (or xUnit), including mocking and edge case coverage.
+● AI Orchestration — using tools like Claude, Cursor, or Copilot to drive architectural quality and development velocity.
+Assignment Requirements
+1. Infrastructure
+Provide a docker-compose.yml that starts the entire environment with a single command:
+docker-compose up --build
+Required services:
+None
+● .NET API — the Inventory Hold Service
+● MongoDB — persistent data store for holds and inventory
+● Redis — caching layer
+● RabbitMQ — message broker for event publishing
+All service connections must be configurable via environment variables or appsettings.json. Do not hardcode connection details.
+2. Architecture
+Structure your solution using Domain-Driven Design layering:
+src/
+├── InventoryHold.Contracts/ # DTOs, enums, request/response models
+├── InventoryHold.Domain/
+│ ├── Services/ # Business logic
+│ └── Repositories/ # Data access interfaces
+├── InventoryHold.Infrastructure/ # MongoDB, Redis, and RabbitMQ implementations
+├── InventoryHold.WebApi/ # Controllers, DI setup, Program.cs
+└── InventoryHold.UnitTests/ # Unit tests
+3. Core API Endpoints
+Implement the following endpoints to manage the hold lifecycle and inventory state:
+● POST /api/holds — Processes a new hold request. It must verify stock levels, deduct inventory atomically if sufficient, create the hold record with a configurable expiration (default: 15 minutes), and return the hold details.
+● GET /api/holds/{holdId} — Retrieves a specific hold by its ID. Must handle expired holds appropriately. Returns a 404 if the hold does not exist.
+● DELETE /api/holds/{holdId} — Releases a hold and restores inventory. Must handle edge cases (non-existent holds, already-released holds, expired holds).
+● GET /api/inventory — View current inventory levels. Seed the database with at least 5 products on startup.
+Key constraints:
+● Stock operations must be safe from race conditions using appropriate MongoDB atomic operations.
+● The API should return meaningful HTTP status codes and error responses — not just 200 and 500.
+● Design your data models, MongoDB document structure, and business logic as you see fit. We will evaluate your modeling decisions.
+4. Messaging
+When hold lifecycle events occur, publish events to RabbitMQ:
+● HoldCreated — when a hold is successfully placed
+● HoldReleased — when a hold is released by the customer
+● HoldExpired — when a hold is detected as expired
+Events should contain enough context for a downstream consumer to act on them. Design your event payloads and exchange/queue topology as you see fit.
+5. Caching
+Implement a caching strategy using Redis for high-frequency read paths. Determine which endpoint(s) benefit from caching, set appropriate TTLs, and ensure the cache stays consistent with the underlying data after mutations.
+6. Unit Testing (Mandatory)
+Provide functional unit tests using nUnit (or xUnit) covering:
+● Validation logic and error handling
+● Core hold lifecycle operations
+● At least one concurrency or edge case scenario
+Minimum 5 tests. Tests must mock the repository, cache, and messaging interfaces — they should not require running infrastructure.
+Note: The solution will not be considered complete without unit test coverage.
+7. Frontend
+Build a single-page React application (TypeScript, Vite) that interacts with the backend API:
+1. Inventory Dashboard — Display current inventory levels (product name, available quantity)
+2. Create Hold — Form to select products, enter quantities, and place a hold
+3. Active Holds List — Show current holds with status, items, and time remaining
+4. Release Hold — Button to release a hold with confirmation
+Expected:
+● TypeScript with proper typing for API responses
+● State management approach of your choice — we will evaluate your selection and implementation
+● Inventory and hold data should stay in sync after mutations (creating/releasing a hold should reflect in inventory levels without a manual page refresh)
+● Error handling (surface API errors to the user) and loading states during API calls
+Not expected: Authentication, routing, pixel-perfect design. CSS framework is optional.
+The frontend can run outside Docker (via npm run dev) or be included in docker-compose — your choice.
+AI-Augmentation Requirement
+We encourage the use of AI coding tools to complete this task. Your evaluation will consider your AI-steering capabilities. You must include an AI-USAGE.md in your repository that details:
+● AI Strategy: Which tools you used and how you managed context (what information you gave the AI, how you structured prompts to match the required architecture).
+● Human Audit: Specific examples of AI suggestions you accepted and ones you rejected — and why. Show us where your judgment improved on the AI's output.
+● Verification: How you used AI to help generate tests, and how you validated the AI-generated code was correct.
+Submission Instructions
+Timeline
+Please complete and submit the assignment within 2 days.
+What to Share
+Provide a link to your GitHub repository containing:
+● Full source code, Dockerfile, and docker-compose.yml
+● Unit test suite
+● A README.md with setup instructions and any design decisions made
+● The mandatory AI-USAGE.md
+● Working one-command startup: docker-compose up --build

@@ -1,0 +1,95 @@
+services:
+
+  mongo:
+    image: mongo:8
+    container_name: inventoryhold-mongo
+    # Multi-document transactions require a replica set, so a single-node one is started here.
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      # Initiates the replica set on the first probe, then simply reports its status.
+      # This is why no separate init container is needed.
+      test: >
+        mongosh --quiet --eval "try { rs.status().ok } catch (e) {
+        rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo:27017'}]}).ok }"
+      interval: 5s
+      timeout: 10s
+      retries: 20
+      start_period: 10s
+
+  redis:
+    image: redis:7-alpine
+    container_name: inventoryhold-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  rabbitmq:
+    image: rabbitmq:4-management-alpine
+    container_name: inventoryhold-rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"   # management UI - guest/guest
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "check_running"]
+      interval: 10s
+      timeout: 10s
+      retries: 12
+      start_period: 20s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: inventoryhold-api
+    ports:
+      - "8080:8080"
+    environment:
+      # Every connection is configuration, never code. The same image runs unchanged against
+      # local containers or managed cloud services.
+      Mongo__ConnectionString: "mongodb://mongo:27017/?replicaSet=rs0"
+      Mongo__Database: "inventoryhold"
+      Mongo__UseTransactions: "true"
+      Redis__ConnectionString: "redis:6379"
+      Redis__InventoryTtlSeconds: "30"
+      RabbitMq__Uri: "amqp://guest:guest@rabbitmq:5672/"
+      Hold__ExpirationMinutes: "15"
+      Hold__SweeperIntervalSeconds: "15"
+      Cors__AllowedOrigins__0: "http://localhost:8081"
+      Cors__AllowedOrigins__1: "http://localhost:5173"
+      ASPNETCORE_ENVIRONMENT: "Production"
+    depends_on:
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "curl -fsS http://localhost:8080/health || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: "http://localhost:8080"
+    container_name: inventoryhold-web
+    ports:
+      - "8081:80"
+    depends_on:
+      - api
+
+volumes:
+  mongo-data:

@@ -1,0 +1,29 @@
+Job Description: Senior Full Stack Engineer
+Stack: .NET 8/9+, React, AI Agents (Claude/Cursor/Copilot)
+About Kibo Commerce:
+At Kibo, we believe the future of software isn't just written by humans—it's orchestrated by them. We are building a high-velocity engineering culture where AI tools handle the boilerplate, allowing our senior engineers to focus on high-level architecture, security, and complex business logic.
+Position Overview:
+We are seeking a Senior Full Stack Engineer who is an absolute expert in AI-assisted development. You are a power user of tools like Claude, Cursor, or Copilot, and you understand that "Prompt Engineering" is actually "Context Engineering." Your primary goal is to build and scale our commerce platform using .NET Core and React at a pace that traditional development cannot match. You will be responsible for defining the patterns that allow AI to generate high-quality, testable, and secure code consistently.
+Key Responsibilities:
+● Rapid Feature Prototyping: Use AI agents to move from a concept or "vibe" to a working MVP in hours, not weeks.
+● Context Management: Expertly manage IDE context (using .cursorrules, MCP servers, or project indexing) to ensure AI outputs adhere to Kibo's specific architectural standards.
+● Full-Stack Orchestration: Lead the development of complex .NET microservices and React frontends, utilizing AI to handle 80% of the manual coding while you focus on the critical 20% of logic and integration.
+● AI-First Testing: Utilize AI to generate comprehensive test suites (nUnit, Jest, Playwright) that ensure high coverage and prevent regressions in an accelerated delivery environment.
+● Code Quality & Review: Act as the final gatekeeper, ensuring that AI-generated code is not just "functional" but follows SOLID principles, security best practices, and performance standards.
+● Database & Messaging: Architect data solutions in PostgreSQL and MongoDB, using AI to optimize queries and implement RabbitMQ event patterns.
+Qualifications:
+● 7+ years of software engineering experience, with the last 1–2 years focused heavily on AI-augmented workflows.
+● AI Mastery (Required): Deep expertise in prompt engineering, context engineering, and the use of AI Agents (e.g., Cursor's Agent Mode, GitHub Copilot Extensions, or specialized CLI agents).
+● Latest .NET Expertise: Advanced knowledge of .NET 8/9+ and C#. You must know how to prompt for the latest syntax and framework features.
+● React & Modern Web: Mastery of React, TypeScript, and modern state management (Zustand, TanStack Query, Redux).
+● The "Kibo Stack": Proven experience with PostgreSQL, MongoDB, Redis, and RabbitMQ.
+● Node.js Proficiency: Ability to navigate and build in Node.js environments when needed.
+● Product Mindset: You don't just "take tickets"; you use AI to explore solutions and proactively propose feature improvements.
+Preferred Skills:
+● Experience with Model Context Protocol (MCP) to connect AI tools to local and remote data sources.
+● Familiarity with Agentic Frameworks (LangGraph, CrewAI) or custom AI-orchestration scripts.
+● Experience in Performance Tuning for AI-generated code (e.g., identifying inefficient loops or redundant API calls).
+Why Kibo Commerce?
+● Velocity as a Priority: We value how fast you can build quality features, and we provide the best AI tools (paid licenses for Cursor, Copilot, etc.) to help you do it.
+● Bleeding Edge: We aren't afraid of the "New." You'll be working with .NET 9 and the latest React updates as soon as they drop.
+● Empowered Engineering: You aren't a "coder"—you are a System Architect who uses AI to execute your vision.

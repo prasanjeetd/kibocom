@@ -18,3 +18,8 @@ dist/
 .vs/
 .idea/
 Thumbs.db
+
+# Assignment source material, not part of the deliverable
+*.pdf
+assg.txt
+jd.ttxt

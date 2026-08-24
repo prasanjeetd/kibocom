@@ -1,6 +1,6 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
-import { api, type CreateHoldRequest } from './api';
+import { api, type CreateHoldRequest, type LogQuery } from './api';
 
 export const queryKeys = {
   inventory: ['inventory'] as const,
@@ -24,6 +24,15 @@ export function useHolds() {
     queryKey: queryKeys.holds,
     queryFn: api.getHolds,
     refetchInterval: 2000,
+  });
+}
+
+/** The log feed is append-only, so polling is the whole synchronisation story. */
+export function useLogs(query: LogQuery, autoRefresh: boolean) {
+  return useQuery({
+    queryKey: ['logs', query],
+    queryFn: () => api.getLogs(query),
+    refetchInterval: autoRefresh ? 3000 : false,
   });
 }
 

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { ApiError, type Hold, type HoldStatus } from './api';
+import { ApiError, type Hold, type HoldStatus, type InventoryItem } from './api';
 import {
   formatCountdown,
   useCreateHold,
@@ -150,6 +150,34 @@ interface Line {
   quantity: number;
 }
 
+/**
+ * Shows what is actually in stock for the chosen product, and warns before submission when the
+ * requested quantity exceeds it. The server is still the authority — it answers 409 under
+ * contention — but there is no reason to make someone submit to learn something already known.
+ */
+function StockHint({
+  line,
+  inventory,
+}: {
+  line: Line;
+  inventory: InventoryItem[];
+}) {
+  if (!line.sku) return null;
+
+  const item = inventory.find((i) => i.sku === line.sku);
+  if (!item) return null;
+
+  const over = line.quantity > item.availableQuantity;
+
+  return (
+    <span className={over ? 'stock-hint stock-hint--over' : 'stock-hint'}>
+      {over
+        ? `Only ${item.availableQuantity} available`
+        : `${item.availableQuantity} of ${item.totalQuantity} available`}
+    </span>
+  );
+}
+
 export function CreateHoldForm() {
   const { data: inventory } = useInventory();
   const createHold = useCreateHold();
@@ -233,6 +261,7 @@ export function CreateHoldForm() {
                   <DismissIcon />
                 </button>
               )}
+              <StockHint line={line} inventory={available} />
             </div>
           ))}
         </div>

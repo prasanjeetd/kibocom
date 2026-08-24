@@ -76,6 +76,25 @@ async function request<T>(path: string, init?: RequestInit): Promise<T> {
   return (await response.json()) as T;
 }
 
+export type LogLevel = 'Information' | 'Warning' | 'Error';
+
+export interface LogEntry {
+  timestamp: string;
+  level: LogLevel;
+  category: string;
+  message: string;
+  traceId: string | null;
+  properties: Record<string, string> | null;
+  exception: string | null;
+}
+
+export interface LogQuery {
+  level?: string;
+  traceId?: string;
+  search?: string;
+  limit?: number;
+}
+
 export const api = {
   getInventory: () => request<InventoryItem[]>('/api/inventory'),
 
@@ -86,4 +105,13 @@ export const api = {
 
   releaseHold: (holdId: string) =>
     request<Hold>(`/api/holds/${holdId}`, { method: 'DELETE' }),
+
+  getLogs: (query: LogQuery) => {
+    const params = new URLSearchParams();
+    if (query.level) params.set('level', query.level);
+    if (query.traceId) params.set('traceId', query.traceId);
+    if (query.search) params.set('search', query.search);
+    params.set('limit', String(query.limit ?? 100));
+    return request<LogEntry[]>(`/api/logs?${params.toString()}`);
+  },
 };

@@ -1,5 +1,6 @@
 using InventoryHold.Domain.Repositories;
 using InventoryHold.Domain.Services;
+using InventoryHold.Infrastructure.Logging;
 using InventoryHold.Infrastructure.Messaging;
 using InventoryHold.Infrastructure.Mongo;
 using InventoryHold.Infrastructure.Options;
@@ -63,6 +64,7 @@ public static class InfrastructureServiceCollectionExtensions
         services.TryAddSingleton(TimeProvider.System);
 
         services.AddSingleton<MongoContext>();
+        services.AddSingleton<MongoLogStore>();
         services.AddSingleton<MongoSeeder>();
         services.AddSingleton<IHoldRepository, MongoHoldRepository>();
 

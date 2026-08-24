@@ -184,7 +184,7 @@ main {
   border: 1px solid var(--border-hairline);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
-  padding: var(--space-6) var(--space-6) var(--space-8);
+  padding: var(--space-5) var(--space-5) var(--space-6);
 }
 
 .card-header {
@@ -231,7 +231,7 @@ main {
 }
 
 .grid td {
-  padding: var(--space-4) var(--space-3);
+  padding: var(--space-3);
   border-bottom: 1px solid var(--border-hairline);
   vertical-align: top;
   color: var(--text-body);
@@ -543,4 +543,208 @@ button:disabled {
     animation: none !important;
     transition: none !important;
   }
+}
+
+/* ------------------------------------------------------------------ tabs -- */
+
+.tabs {
+  display: flex;
+  gap: var(--space-1);
+  border-bottom: 1px solid var(--border-hairline);
+  margin-bottom: var(--space-6);
+}
+
+.tab {
+  min-width: 0;
+  padding: var(--space-3) var(--space-4);
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  border-radius: 0;
+  font: inherit;
+  font-size: var(--text-lead);
+  font-weight: var(--weight-medium);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease);
+}
+
+.tab:hover { color: var(--text-strong); }
+
+.tab--selected {
+  color: var(--text-strong);
+  border-bottom-color: var(--teal);
+}
+
+/* --------------------------------------------------------------- toolbar -- */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.toolbar select { width: auto; min-width: 160px; }
+.toolbar input[type='search'] { width: auto; flex: 1 1 240px; }
+
+.toggle {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.toggle input {
+  width: auto;
+  height: auto;
+  margin: 0;
+  accent-color: var(--teal);
+}
+
+.filter-note {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  margin-bottom: var(--space-4);
+  border: 1px solid var(--teal-border);
+  background-color: var(--teal-wash);
+  border-radius: var(--radius-sm);
+  font-size: var(--text-sm);
+  color: var(--text-body);
+}
+
+.filter-note code {
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  color: var(--teal-text);
+}
+
+/* ------------------------------------------------------------------ logs -- */
+
+.logs td { vertical-align: top; }
+
+.logs td:first-child {
+  white-space: nowrap;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.fields {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-1);
+  margin-top: var(--space-2);
+}
+
+.chip {
+  display: inline-block;
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-pill);
+  background-color: var(--surface);
+  border: 1px solid var(--border-hairline);
+  font-size: 12px;
+  line-height: 18px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.chip b {
+  color: var(--text-strong);
+  font-weight: var(--weight-medium);
+}
+
+.trace {
+  min-width: 0;
+  padding: 2px var(--space-2);
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 12px;
+  line-height: 18px;
+  background-color: var(--surface);
+  border: 1px solid var(--border-hairline);
+  border-radius: var(--radius-pill);
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color var(--duration) var(--ease);
+}
+
+.trace:hover {
+  color: var(--teal-text);
+  border-color: var(--teal-border);
+}
+
+.exception {
+  margin: var(--space-2) 0 0;
+  padding: var(--space-3);
+  max-height: 180px;
+  overflow: auto;
+  font-family: ui-monospace, "Cascadia Mono", Consolas, monospace;
+  font-size: 12px;
+  line-height: 18px;
+  background-color: var(--danger-wash);
+  border: 1px solid var(--danger-border);
+  border-radius: var(--radius-sm);
+  color: var(--danger-text);
+}
+
+.badge--information {
+  background-color: var(--teal-wash);
+  border-color: var(--teal-border);
+  color: var(--teal-text);
+}
+
+.badge--warning {
+  background-color: var(--amber-wash);
+  border-color: var(--amber-border);
+  color: var(--amber-text);
+}
+
+.badge--error {
+  background-color: var(--danger-wash);
+  border-color: var(--danger-border);
+  color: var(--danger-text);
+}
+
+
+/* ------------------------------------------------------- operations layout -- */
+
+.ops {
+  display: grid;
+  gap: var(--space-5);
+}
+
+.ops-main {
+  display: grid;
+  gap: var(--space-5);
+  min-width: 0;
+}
+
+@media (min-width: 1040px) {
+  .ops {
+    grid-template-columns: 360px minmax(0, 1fr);
+    align-items: start;
+  }
+
+  /* The form follows you down the page: stock levels and the decision made against them
+     should never be separated by a scroll. */
+  .ops > .card:first-child {
+    position: sticky;
+    top: var(--space-5);
+  }
+}
+
+.stock-hint {
+  grid-column: 1 / -1;
+  margin-top: calc(var(--space-1) * -1);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+}
+
+.stock-hint--over {
+  color: var(--danger-text);
+  font-weight: var(--weight-medium);
 }

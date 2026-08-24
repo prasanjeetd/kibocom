@@ -130,6 +130,35 @@ Twenty-six tests, all with mocked ports, no infrastructure required:
 Beyond the suite: `dotnet build` is clean with zero warnings across all five projects, and the
 frontend type-checks under `strict` with `erasableSyntaxOnly`.
 
+### Integration evidence
+
+Mocked tests prove the logic; they cannot prove the wiring. The system was therefore exercised
+against real infrastructure twice — once on local containers, once against managed free tiers
+(MongoDB Atlas M0, Upstash, CloudAMQP) — with no code change, only environment variables.
+
+| Claim | How it was demonstrated |
+|---|---|
+| Oversell is impossible | 12 concurrent holds, each demanding all 8 remaining units: **exactly one 201, eleven 409**. Stock settled at 0, never negative, `available + held == total` |
+| Multi-item holds are atomic | A two-product hold committed inside a real transaction on Atlas M0, and both lines restored together on release |
+| Stock returns on its own | A hold with a 6-second TTL: `Active` at t+4s, **`Expired` with stock restored at t+6s**, with no request touching it. Releasing it afterwards returned 409 |
+| Status codes are meaningful | 201 / 400 duplicate SKU / 400 zero quantity / 404 unknown hold / 409 insufficient stock / 409 double release / 422 unknown SKU — each verified against a live API |
+| Events really flow | Message observed on `inventory.holds.audit` via the `hold.#` binding, `delivery_mode: 2`, carrying a `message_id` for consumer deduplication |
+| One-command startup works | `docker compose down -v` then `docker compose up --build` from an empty volume: healthchecks gated API startup until all three dependencies were healthy, the replica set self-initiated, five products seeded, and a create/release cycle completed |
+
+The 409 body is worth showing, because "meaningful status codes" means more than the number:
+
+```json
+{
+  "title": "Insufficient stock",
+  "status": 409,
+  "detail": "Insufficient stock for 'SKU-1005': requested 9999, available 6.",
+  "sku": "SKU-1005", "requested": 9999, "available": 6
+}
+```
+
+One defect was found this way and fixed: the event payload was serialising its own `routingKey`,
+duplicating information the AMQP envelope already carries.
+
 ### What the AI was not trusted with
 
 - **Deciding the concurrency model.** The guard-in-the-filter pattern, the transaction boundary,
